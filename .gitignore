@@ -1,0 +1,14 @@
+server/node_modules/
+server/dist/
+server/.env
+server/.env.local
+server/.env.development
+server/.env.production
+server/.env.test
+client/node_modules/
+client/dist/
+client/.env
+client/.env.local
+client/.env.development
+client/.env.production
+client/.env.test
