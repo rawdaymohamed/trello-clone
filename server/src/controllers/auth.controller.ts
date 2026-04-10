@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import User from "../models/User";
-import type { SignupInput } from "../validation/auth.validation";
+import User from "../models/User.js";
+import type { SignupInput } from "../validation/auth.validation.js";
 
 export const signup = async (
   req: Request<{}, {}, SignupInput>,
