@@ -7,12 +7,28 @@ dotenv.config();
 connectDB();
 
 const app = express();
+const allowedOrigins = [
+  "https://its-trello-clone.vercel.app", // Production URL
+  "http://localhost:5173", // For local development
+];
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL, // Allow your Vite frontend
-    credentials: true, // Essential for HttpOnly Cookies!
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"], // Allow necessary methods
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"], // Custom headers
   }),
 );
+
+// Ensure preflight requests are handled
+app.options("*", cors());
 app.use(express.json()); // Essential to prevent the "undefined req.body" bug
 const PORT = process.env.PORT || 5000;
 app.use("/api/auth", authRoutes);
