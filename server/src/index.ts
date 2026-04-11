@@ -14,6 +14,7 @@ app.use(
     credentials: true, // Essential for HttpOnly Cookies!
   }),
 );
+app.options("*", cors());
 const PORT = process.env.PORT || 5000;
 app.use("/api/auth", authRoutes);
 
