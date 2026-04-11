@@ -7,23 +7,27 @@ dotenv.config();
 connectDB();
 
 const app = express();
+app.use(express.json()); // Essential to prevent the "undefined req.body" bug
 app.use(
   cors({
     origin: process.env.CLIENT_URL, // Allow your Vite frontend
-    methods: ["GET", "POST", "PUT", "DELETE"], // Explicitly allow these methods
-    allowedHeaders: ["Content-Type", "Authorization"], // Explicitly allow these headers
     credentials: true, // Essential for HttpOnly Cookies!
   }),
 );
-app.options("*", cors());
-app.use(express.json()); // Essential to prevent the "undefined req.body" bug
-const PORT = process.env.PORT || 5000;
+app.options(/.*/, cors());
 app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.send("API is running securely...");
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// To this (more reliable for local):
+if (process.env.NODE_ENV === "development" || !process.env.NODE_ENV) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+// THE KEY: Export the app for Vercel
+export default app;
