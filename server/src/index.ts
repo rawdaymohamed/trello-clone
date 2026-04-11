@@ -21,6 +21,13 @@ app.get("/", (req, res) => {
   res.send("API is running securely...");
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on port ${process.env.PORT}`);
-});
+// CRITICAL: Only listen if NOT on Vercel
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+// THE KEY: Vercel needs this export
+export default app;
