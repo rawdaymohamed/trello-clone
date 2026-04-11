@@ -10,11 +10,11 @@ const app = express();
 app.use(express.json()); // Essential to prevent the "undefined req.body" bug
 app.use(
   cors({
-    origin: process.env.CLIENT_URL, // Allow your Vite frontend
-    credentials: true, // Essential for HttpOnly Cookies!
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Add this
   }),
 );
-app.options(/.*/, cors());
 app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
