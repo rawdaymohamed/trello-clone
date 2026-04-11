@@ -37,5 +37,15 @@ export const signupSchema = z.object({
       ), // Add this line
   }),
 });
-
+export const loginSchema = z.object({
+  body: z.object({
+    identifier: z
+      .string()
+      .trim()
+      .min(1, "Email or username is required")
+      .transform((val) => val.toLowerCase()),
+    password: z.string().min(1, "Password is required"),
+  }),
+});
 export type SignupInput = z.infer<typeof signupSchema>["body"];
+export type LoginInput = z.infer<typeof loginSchema>["body"];

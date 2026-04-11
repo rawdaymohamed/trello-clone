@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/auth.routes.js";
+import { errorHandler } from "./middleware/errorHandler.js";
 dotenv.config();
 connectDB();
 
@@ -20,7 +21,13 @@ app.use("/api/auth", authRoutes);
 app.get("/", (req, res) => {
   res.send("API is running securely...");
 });
-
+app.use((req, res) => {
+  res.status(404).json({
+    status: "fail",
+    message: "Route not found",
+  });
+});
+app.use(errorHandler);
 // CRITICAL: Only listen if NOT on Vercel
 if (process.env.NODE_ENV !== "production") {
   const PORT = process.env.PORT || 5000;
