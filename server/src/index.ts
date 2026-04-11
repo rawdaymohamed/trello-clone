@@ -7,13 +7,13 @@ dotenv.config();
 connectDB();
 
 const app = express();
-app.use(express.json()); // Essential to prevent the "undefined req.body" bug
 app.use(
   cors({
     origin: process.env.CLIENT_URL, // Allow your Vite frontend
     credentials: true, // Essential for HttpOnly Cookies!
   }),
 );
+app.use(express.json()); // Essential to prevent the "undefined req.body" bug
 const PORT = process.env.PORT || 5000;
 app.use("/api/auth", authRoutes);
 
